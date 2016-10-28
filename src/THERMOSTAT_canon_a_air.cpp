@@ -64,7 +64,6 @@ void lcd_pr(){
 	lcd.print("ordre:");
 	lcd.setCursor(6,1);
 	lcd.print(ordre_celsius[step_ordre],0);
-	//lcd.print(step_ordre);
 
 }
 void pos_servo(){
@@ -118,7 +117,6 @@ void loop() {
 	byte type_s;
 	byte data[12];
 	byte addr[8];
-	//float prevtemp;
 
 	//selecteur d ordre
 	if(!digitalRead(bouton)){
@@ -128,20 +126,20 @@ void loop() {
 		}
 	}
 
-	//acquisition de la temperature
+	//acquisition du capteur
 	if ( !ds.search(addr)) {
 		ds.reset_search();
 		delay(250);
 		return;
 	}
 
+	#ifdef DEBUG
 	Serial.print("ROM =");
 	for( i = 0; i < 8; i++) {
-		#ifdef DEBUG
 			Serial.write(' ');
 			Serial.print(addr[i], HEX);
-		#endif // DEBUG
 	}
+	#endif // DEBUG
 
 	if (OneWire::crc8(addr, 7) != addr[7]) {
 		#ifdef DEBUG
@@ -149,9 +147,11 @@ void loop() {
 		#endif // DEBUG
 		return;
 	}
+	#ifdef DEBUG
 	Serial.println();
+	#endif // DEBUG
 
-	// the first ROM byte indicates which chip
+	// indicateur du type de capteur
 	switch (addr[0]) {
 	case 0x10:
 		#ifdef DEBUG
@@ -204,6 +204,7 @@ void loop() {
 		else if (cfg == 0x40) raw = raw << 1; // 11 bit res, 375 ms
 		// default is 12 bit resolution, 750 ms conversion time
   	}
+
 	celsius = (float)raw / 16.0;
 	#ifdef DEBUG
 		Serial.print("  Temperature = ");
@@ -211,7 +212,10 @@ void loop() {
 		Serial.print(" Celsius, ");
 	#endif // DEBUG
 
-	if(celsius>40){}else
+	if(celsius>40){
+		//nada , protection contre les valeurs erronées (parasites)
+	}
+	else
 	{
 		lcd_pr();
 		ordre_canon();
