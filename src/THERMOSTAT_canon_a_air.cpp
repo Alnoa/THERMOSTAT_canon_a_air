@@ -1,6 +1,6 @@
 #include <Arduino.h>
 //THERMOSTAT_canon_a_air.ino
-/*
+/*trololol
                                       +-----+
          +----[PWR]-------------------| USB |--+
          |                            +-----+  |
