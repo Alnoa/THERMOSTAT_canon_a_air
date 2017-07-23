@@ -1,7 +1,6 @@
 #include <Arduino.h>
 //THERMOSTAT_canon_a_air.ino
-/*trololol
-+-----+
+/*+-----+
 +----[PWR]-------------------| USB |--+
 |                            +-----+  |
 |         GND/RST2  [ ][ ]            |
@@ -82,7 +81,7 @@ void ordre_canon(){
 		lcd.print("off");
 	}
 	if(celsius<ordre_celsius[step_ordre]-3){
-		posservo=18;
+		posservo=20;
 		lcd.setCursor(12,1);
 		lcd.print("on ");
 	}
